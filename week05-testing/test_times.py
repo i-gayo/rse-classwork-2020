@@ -48,7 +48,9 @@ def test_negative_time():
         range1 = time_range("2010-01-12 13:00:00", "2010-01-12 11:00:00")
  """
 
+""" 
 @pytest.mark.parametrize("time_range1, time_range2 ,expected", [
+#Can do a list of timerange1, timerange2, expected values to input in the test
 
     #Test 1: Test given input
     (time_range("2010-01-12 10:00:00", "2010-01-12 12:00:00"),
@@ -76,15 +78,23 @@ def test_negative_time():
 def test_eval_overlap(time_range1, time_range2, expected):
     result = compute_overlap_time(time_range1, time_range2)
     assert result == expected 
+"""
+
+#Opening the yaml file containing all the parameters to check
+with open("fixture.yaml", 'r') as yamlfile:
+    fixture = yaml.safe_load(yamlfile)
+    print(fixture)
+
+#Parameterized tests using test name 
+
+@pytest.mark.parametrized("test_name", fixture)
 
 def test_negative_time():
     #Checks if an error is raised for exception 
     with raises(ValueError) as exception:
         range1 = time_range("2010-01-12 13:00:00", "2010-01-12 11:00:00")
 
-
-
-    
+   
 
 
 
