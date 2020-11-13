@@ -4,6 +4,8 @@
 from times import compute_overlap_time, time_range
 import pytest
 from pytest import raises 
+import yaml
+
 
 """ #Testing function 
 def test_given_input():
@@ -87,7 +89,23 @@ with open("fixture.yaml", 'r') as yamlfile:
 
 #Parameterized tests using test name 
 
-@pytest.mark.parametrized("test_name", fixture)
+
+@pytest.mark.parametrize("test_name", fixture)
+# fixture is a list of dictionaries [{'generic':...}, {'no_overlap':...}, ...]
+
+def test_time_range_overlap(test_name):
+    
+    #Test name will be a dictionary which has 3 parameters to put in 
+    properties = list(test_name.values())[0]    #Obtain values under each test
+    
+    #Pass all the parameters under time_range_1 to function time range
+    first_range = time_range(*properties['time_range_1'])
+    second_range = time_range(*properties['time_range_2'])
+
+    #Obtain expected overlap for every test 
+    expected_overlap = [(start, stop) for start, stop in properties['expected']]
+    #Assert that overlap is same as expected 
+    assert compute_overlap_time(first_range, second_range) == expected_overlap
 
 def test_negative_time():
     #Checks if an error is raised for exception 
